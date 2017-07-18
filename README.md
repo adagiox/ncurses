@@ -1,0 +1,3 @@
+# ncurses
+Figuring out ncurses
+

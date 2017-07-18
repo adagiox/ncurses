@@ -1,7 +1,6 @@
-
 all:
-	gcc draw.c -lncurses
-	./a.out
+	make -C libft/ re
+	gcc draw.c libft/libft.a -lncurses
 
 clean:
 	rm a.out
