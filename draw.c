@@ -1,12 +1,6 @@
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <curses.h>
-#include "libft/libft.h"
+#include "draw.h"
 
-#define DURATION 120000
-
-int screen_setup()
+int setup()
 {
 	initscr();
  	noecho();
@@ -16,32 +10,42 @@ int screen_setup()
 	return 1;
 }
 
-void exit_screen()
+int exit_screen()
 {
 	endwin();
 	exit(0);
-}
-
-int key_input(int *x, int *y)
-{
-	if (getch() == KEY_LEFT)
-	{
-		*x--;
-	}
-	else if (getch() == KEY_RIGHT)
-	{
-		*x++;
-	}
-	else if (getch() == KEY_UP)
-	{
-		*y--;
-	}
-	else if (getch() == KEY_DOWN)
-	{
-		*y++;
-	}
 	return 1;
 }
+
+int setup_echo()
+{
+	initscr();
+ 	curs_set(FALSE);
+	//raw();
+	keypad(stdscr, TRUE);
+	return 1;
+}
+
+// int key_input(int *x, int *y)
+// {
+// 	if (getch() == KEY_LEFT)
+// 	{
+// 		*x--;
+// 	}
+// 	else if (getch() == KEY_RIGHT)
+// 	{
+// 		*x++;
+// 	}
+// 	else if (getch() == KEY_UP)
+// 	{
+// 		*y--;
+// 	}
+// 	else if (getch() == KEY_DOWN)
+// 	{
+// 		*y++;
+// 	}
+// 	return 1;
+// }
 
 int print_text(int x, int y, char *str)
 {
@@ -87,35 +91,58 @@ char *scroll_left(char *str)
 
 char *scroll_right(char *str)
 {
-	char *temp = (char *)malloc(sizeof(char) * strlen(str) + 1);
-	char save = str[0];
-	int i = 1;
-	while (i < strlen(str))
+	char *temp = ft_strnew(ft_strlen(str));
+	char save = str[ft_strlen(str) - 1];
+	for (int i = 1; i < ft_strlen(str); i++)
 	{
-		temp[i - 1] = str[i];
-		i++;
+		temp[i] = str[i - 1];
 	}
-	temp[i] = save;
-	temp[i + 1] = 0;
+	temp[0] = save;
 	return temp;
 }
 
 int print_scroll_left(int y, int x, char **str)
 {
-	clear();
 	mvprintw(y, x, *str);
-	usleep(DURATION);
-	refresh();
 	*str = scroll_left(*str);
 	return 1;
 }
 
-int print_scroll_right(int y, int x, char *str)
+int print_scroll_right(int y, int x, char **str)
 {
-	mvprintw(y, x, scroll_right(str));
-	refresh();
+	mvprintw(y, x, *str);
+	*str = scroll_right(*str);
 	return 1;
 }
+
+// int print_col_scroll(int x, char *str)
+// {
+// 	cpy = ft_strdup(str);
+// 	for (int j = 0; j < getmaxy(stdscr); j+=2)
+// 	{
+// 		for (int i = 0; i < 50; i++)
+// 		{
+// 			print_text(j, 0, str);
+// 			print_text(j + 1, 0, cpy);
+// 		}
+// 	}
+// 	str = scroll_left(str);
+// 	cpy = scroll_right(cpy);
+// }
+//
+// int print_row_scroll(int x, char *str)
+// {
+// 	for (int j = 0; j < getmaxy(stdscr); j+=2)
+// 	{
+// 		for (int i = 0; i < 50; i++)
+// 		{
+// 			print_text(j, 0, str);
+// 			print_text(j + 1, 0, cpy);
+// 		}
+// 	}
+// 	str = scroll_left(str);
+// 	cpy = scroll_right(cpy);
+// }
 
 int print_move_text(char *str)
 {
@@ -252,12 +279,28 @@ int print_scroll_all(int y, char *str)
 // 	return 0;
 // }
 
-int main(int argc, char **argv)
-{
-	screen_setup();
-	char *str = argv[1];
-	print_grid();
-	usleep(DURATION * 50);
- 	endwin();
-	return 0;
-}
+// int main(int argc, char **argv)
+// {
+// 	screen_setup();
+// 	char *str = argv[1];
+// 	char *cpy = ft_strdup(str);
+// 	while (1)
+// 	{
+// 		clear();
+// 		for (int j = 0; j < getmaxy(stdscr); j+=2)
+// 		{
+// 			for (int i = 0; i < 50; i++)
+// 			{
+// 				print_text(j, 0, str);
+// 				print_text(j + 1, 0, cpy);
+// 			}
+// 		}
+// 		str = scroll_left(str);
+// 		cpy = scroll_right(cpy);
+// 		refresh();
+// 		usleep(DURATION);
+// 	}
+// 	usleep(DURATION * 50);
+//  	endwin();
+// 	return 0;
+// }
