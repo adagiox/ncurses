@@ -54,6 +54,16 @@ int print_text(int x, int y, char *str)
 	return 1;
 }
 
+int print_chat()
+{
+	for (int i = 0; i < getmaxx(stdscr); i++)
+	{
+		mvprintw(getmaxy(stdscr) - 1, i, "-");
+	}
+	refresh();
+	return 1;
+}
+
 int print_grid()
 {
 	clear();

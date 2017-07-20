@@ -20,7 +20,8 @@ int print_scroll_left(int y, int x, char **str);
 int print_scroll_right(int y, int x, char **str);
 int print_move_text(char *str);
 int print_scroll_top(int y, char *str);
-
+int rain();
+int print_chat();
 int read_echo_pos(int y, int x);
 
 #endif
